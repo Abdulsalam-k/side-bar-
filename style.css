@@ -1,187 +1,164 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Syne:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
+/* 1. RESET & VARIABLES */
 *, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; /* Prevents padding from making elements wider */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 :root {
-  --bg-deep: #0a0c14;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --accent: #6ee7b7;
-  --accent-glow: rgba(110, 231, 183, 0.18);
-  --accent2: #818cf8;
-  --text-primary: #f0f4ff;
-  --text-muted: #7b85a3;
-  --border: rgba(255, 255, 255, 0.07);
-  --sidebar-w: 260px; /* Adjust this to make sidebar narrower or wider */
+    --bg-deep: #0a0c14;
+    --accent: #6ee7b7;
+    --accent-glow: rgba(110, 231, 183, 0.18);
+    --text-primary: #f0f4ff;
+    --text-muted: #7b85a3;
+    --sidebar-w: 280px;
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  
-  overflow: hidden;
-  margin: 0;
-  /* Background with overlay to keep text readable */
-  background: 
-    linear-gradient(rgba(10, 12, 20, 0.75), rgba(10, 12, 20, 0.75)),
-    url('background.jpg') center/cover no-repeat fixed;
-  background-color: #0a0c14; 
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background: 
+        linear-gradient(rgba(10, 12, 20, 0.7), rgba(10, 12, 20, 0.7)),
+        url('background.jpg') center/cover no-repeat fixed;
+    background-color: #0a0c14;
+    color: var(--text-primary);
+    overflow-x: hidden;
 }
 
-.main_box {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: row; /* Changed to ROW so sidebar stays on the left */
-  margin: 20px auto;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.1);
-  width: 90%; 
-  max-width: var(--sidebar-w); /* Limits how far the box spreads on big screens */
-  min-height: 580px;
-  background: rgba(15, 17, 26, 0.4); /* Subtle transparency for main area */
+/* 2. THE TOGGLE BUTTON */
+.menu-toggle {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    z-index: 1001; /* Above the sidebar */
+    width: 50px;
+    height: 50px;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 10px 25px rgba(110, 231, 183, 0.3);
+    transition: transform 0.2s ease;
 }
 
-/* Sidebar */
+.menu-toggle:active { transform: scale(0.9); }
+
+/* 3. THE SIDEBAR (Hidden by Default) */
 .sidebar_menu {
-  width: var(--sidebar-w);
-  flex-shrink: 0; /* Keeps the sidebar from squishing */
-  background: rgba(10, 12, 22, 0.92);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-  padding: 24px 0 0;
-  position: relative;
+    position: fixed;
+    top: 0;
+    left: calc(var(--sidebar-w) * -1); /* Moves it off-screen */
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: rgba(10, 12, 22, 0.95);
+    backdrop-filter: blur(30px);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 90px 0 0; /* Space for the button */
+    transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Subtle top glow */
-.sidebar_menu::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 120px;
-  background: radial-gradient(ellipse, rgba(110, 231, 183, 0.15) 0%, transparent 70%);
-  pointer-events: none;
+.sidebar_menu.active {
+    left: 0; /* Slides in */
 }
 
-/* Logo */
+/* 4. SIDEBAR INTERNAL COMPONENTS */
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 24px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 25px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.logo img {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
+.logo img { width: 35px; border-radius: 8px; }
 .logo a {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 18px;
-  color: var(--text-primary);
-  text-decoration: none;
-  letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
 }
 
-/* Navigation */
 .sidebar_menu ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 12px;
-  flex: 1; /* Pushes social media to bottom */
+    list-style: none;
+    padding: 20px 15px;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .sidebar_menu ul li a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.25s ease;
-  position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 18px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 12px;
+    transition: 0.3s;
+    margin-bottom: 4px;
 }
 
-.sidebar_menu ul li a i {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-}
-
-.sidebar_menu ul li a:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.sidebar_menu ul li a:hover i {
-  color: var(--accent);
-}
-
-/* Active State */
+.sidebar_menu ul li a:hover, 
 .sidebar_menu ul li.active a {
-  color: var(--text-primary);
-  background: linear-gradient(90deg, rgba(110, 231, 183, 0.1), transparent);
-  border-left: 3px solid var(--accent);
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* Social Icons - Corrected to align Left */
+.sidebar_menu ul li.active a {
+    border-left: 3px solid var(--accent);
+    background: linear-gradient(90deg, var(--accent-glow), transparent);
+}
+
 .social_media {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start; /* Aligns to the left */
-  padding: 20px 24px; /* 24px matches the logo alignment */
-  margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 12px;
+    padding: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .social_media a {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: grid;
-  place-items: center;
-  color: var(--text-muted);
-  font-size: 14px;
-  text-decoration: none;
-  transition: all 0.3s ease;
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+    transition: 0.3s;
+    text-decoration: none;
 }
 
 .social_media a:hover {
-  background: var(--accent-glow);
-  color: var(--accent);
-  border-color: rgba(110, 231, 183, 0.4);
-  transform: translateY(-3px);
+    color: var(--accent);
+    background: var(--accent-glow);
+    transform: translateY(-3px);
 }
 
-/* Animation */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 5. CONTENT AREA */
+.content_area {
+    padding: 100px 50px;
+    transition: filter 0.4s ease;
 }
 
-.sidebar_menu ul li {
-  animation: fadeUp 0.4s ease both;
+/* Blur background when menu is open */
+body:has(.sidebar_menu.active) .content_area {
+    filter: blur(5px);
+}
+
+/* 6. MOBILE ADJUSTMENTS */
+@media (max-width: 768px) {
+    :root { --sidebar-w: 85%; } /* Sidebar covers more of screen on phone */
+    
+    .content_area { padding: 100px 20px; }
+    
+    .welcome_note h1 { font-size: 24px; }
 }
