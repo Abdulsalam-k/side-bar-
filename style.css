@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Syne:wght@800&family=DM+Sans:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Prevents padding from making elements wider */
+}
+
+:root {
+  --bg-deep: #0a0c14;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --accent: #6ee7b7;
+  --accent-glow: rgba(110, 231, 183, 0.18);
+  --accent2: #818cf8;
+  --text-primary: #f0f4ff;
+  --text-muted: #7b85a3;
+  --border: rgba(255, 255, 255, 0.07);
+  --sidebar-w: 260px; /* Adjust this to make sidebar narrower or wider */
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  
+  overflow: hidden;
+  margin: 0;
+  /* Background with overlay to keep text readable */
+  background: 
+    linear-gradient(rgba(10, 12, 20, 0.75), rgba(10, 12, 20, 0.75)),
+    url('background.jpg') center/cover no-repeat fixed;
+  background-color: #0a0c14; 
+}
+
+.main_box {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row; /* Changed to ROW so sidebar stays on the left */
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.1);
+  width: 90%; 
+  max-width: var(--sidebar-w); /* Limits how far the box spreads on big screens */
+  min-height: 580px;
+  background: rgba(15, 17, 26, 0.4); /* Subtle transparency for main area */
+}
+
+/* Sidebar */
+.sidebar_menu {
+  width: var(--sidebar-w);
+  flex-shrink: 0; /* Keeps the sidebar from squishing */
+  background: rgba(10, 12, 22, 0.92);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 0;
+  position: relative;
+}
+
+/* Subtle top glow */
+.sidebar_menu::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 120px;
+  background: radial-gradient(ellipse, rgba(110, 231, 183, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 14px;
+}
+
+.logo img {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.logo a {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+/* Navigation */
+.sidebar_menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+  flex: 1; /* Pushes social media to bottom */
+}
+
+.sidebar_menu ul li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.sidebar_menu ul li a i {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar_menu ul li a:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar_menu ul li a:hover i {
+  color: var(--accent);
+}
+
+/* Active State */
+.sidebar_menu ul li.active a {
+  color: var(--text-primary);
+  background: linear-gradient(90deg, rgba(110, 231, 183, 0.1), transparent);
+  border-left: 3px solid var(--accent);
+}
+
+/* Social Icons - Corrected to align Left */
+.social_media {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start; /* Aligns to the left */
+  padding: 20px 24px; /* 24px matches the logo alignment */
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.social_media a {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social_media a:hover {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: rgba(110, 231, 183, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sidebar_menu ul li {
+  animation: fadeUp 0.4s ease both;
+}
